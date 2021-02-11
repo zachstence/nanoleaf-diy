@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "FastLED.h"
 
-#define NUM_LEDS 9
+#define NUM_LEDS 12
 #define DATA_PIN 6
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
@@ -88,22 +88,49 @@ void rainbowSpin2(int dH, int dT) {
     delay(dT);
   }
 
-  
-//  fill_rainbow(leds, NUM_LEDS, x, 255 / NUM_LEDS);
-//  FastLED.show();
-//
-//  EVERY_N_MILLISECONDS(50) {
-//    x++;
-//  }
-
+  //  fill_rainbow(leds, NUM_LEDS, x, 255 / NUM_LEDS);
+  //  FastLED.show();
+  //
+  //  EVERY_N_MILLISECONDS(50) {
+  //    x++;
+  //  }
 }
+
+
+void breathe(uint8_t r, uint8_t g, uint8_t b, int cycleTime) {
+  CHSV hsv = rgb2hsv_approximate(CRGB(r, g, b));
+  uint8_t maxBrightness = hsv.value;
+
+  while (true) {
+    // Dim all LEDs
+    for (uint8_t brightness = maxBrightness; brightness > 0; brightness--) {
+      fill_solid(leds, NUM_LEDS, CHSV(hsv.h, hsv.s, brightness));
+      FastLED.show();
+      delay((cycleTime * 1000)/255);
+    }
+
+    // Brighten LEDs back to maxBrightness
+    for (uint8_t brightness = 0; brightness < maxBrightness; brightness++) {
+      fill_solid(leds, NUM_LEDS, CHSV(hsv.h, hsv.s, brightness));
+      FastLED.show();
+      delay((cycleTime * 1000)/255);
+    }
+  }
+}
+
+
+/////////////////////////////////////////////////
+
+
+
 
 /////////////////////////////////////////////////
 
 void loop() {
 //  rainbowSpin(28.333);
-  rainbowSpin2(5, 50);
+  // rainbowSpin2(5, 50);
 //  rainbowTheater(5, 50);
 //  setColor(255, 0, 0);
+  breathe(255, 0, 0, 2);
   // chase(0, 255, 229);
 }
