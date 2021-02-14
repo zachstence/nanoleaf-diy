@@ -1,9 +1,10 @@
 #include <Arduino.h>
 #include "FastLED.h"
+#include "OneDimensional.cpp"
+#include "TwoDimensional.cpp"
 
-#include "OneDimensional.cpp";
-
-auto leds = OneDimensional(12);
+auto leds = TwoDimensional();
+// auto leds = OneDimensional();
 
 void setup() {
     leds.setup();

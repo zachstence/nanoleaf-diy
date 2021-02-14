@@ -7,8 +7,8 @@ class OneDimensional {
     CRGB* leds;
 
     public:
-    OneDimensional(int numLeds) {
-        leds = new CRGB[numLeds];
+    OneDimensional() {
+        leds = new CRGB[NUM_LEDS];
     }
 
     void setup() {
