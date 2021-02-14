@@ -11,15 +11,16 @@ void setup() {
 }
 
 void loop() {
-    //  rainbowSpin(28.333);
+    // rainbowSpin(28.333);
     // rainbowSpin2(5, 50);
     // leds.rainbowTheater(5, 50);
-    //  setColor(255, 0, 0);
+    // setColor(255, 0, 0);
     // breathe(255, 0, 0, 2);
     // chase(0, 255, 229);
 
     // leds.solidRed();
     // leds.redVerticalFade();
-    leds.verticalRainbow(4);
+    // leds.verticalRainbow(4);
     // leds.horizontalRainbow(4);
+    leds.rainbowWheel(4);
 }

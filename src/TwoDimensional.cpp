@@ -4,33 +4,33 @@
 #include "config.h"
 
 struct Point {
-    Point(int _x, int _y) {
-        x = _x;
-        y = _y;
-    }
     int x;
     int y;
-};
 
+    float getAngle(Point origin) {
+        Point vector = {this->x - origin.x, this->y - origin.y};
+        return atan2(vector.x, vector.y);
+    }
+};
 
 class TwoDimensional {
     CRGB* leds;
     int minX, minY, maxX, maxY;
-    int res = 100;
 
+    Point center = Point{100, 100};
     Point points[NUM_LEDS] = {
-        Point(100, 18),
-        Point(85, 48),
-        Point(71, 78),
-        Point(56, 108),
-        Point(29, 141),
-        Point(63, 138),
-        Point(96, 136),
-        Point(129, 134),
-        Point(171, 141),
-        Point(152, 113),
-        Point(133, 86),
-        Point(115, 58),
+        Point{100, 18},
+        Point{85, 48},
+        Point{71, 78},
+        Point{56, 108},
+        Point{29, 141},
+        Point{63, 138},
+        Point{96, 136},
+        Point{129, 134},
+        Point{171, 141},
+        Point{152, 113},
+        Point{133, 86},
+        Point{115, 58},
     };
 
 
@@ -103,6 +103,17 @@ class TwoDimensional {
             delay(1000 * ((float)periodSec / 255));
         }
     }
+    
+    void rainbowWheel(int periodSec) {
+        for (uint8_t t = 0; true; t++) {
+            for (int i = 0; i < NUM_LEDS; i++) {
+                CHSV color = rainbowWheel(points[i].x, points[i].y, center.x, center.y, t);
+                leds[i].setHSV(color.h, color.s, color.v);
+            }
+            FastLED.show();
+            delay(1000 * ((float)periodSec / 255));
+        }
+    }
 
     private:
     CHSV solidRed(int x, int y) {
@@ -121,6 +132,16 @@ class TwoDimensional {
 
     CHSV horizontalRainbow(int x, int y, uint8_t hueAngle, uint8_t hueOffset) {
         uint8_t hue = map(x, minX, maxX, hueOffset, hueOffset + hueAngle);
+        return CHSV(hue, 255, 255);
+    }
+
+    CHSV rainbowWheel(int x, int y, int cx, int cy, uint8_t hueOffset) {
+        Point p = {x, y};
+        Point c = {cx, cy};
+
+        float angle = c.getAngle(p);
+        uint8_t hue = map(angle, -PI, PI, hueOffset, 255+hueOffset);
+        
         return CHSV(hue, 255, 255);
     }
 };
