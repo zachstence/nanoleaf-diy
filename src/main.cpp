@@ -19,5 +19,7 @@ void loop() {
     // chase(0, 255, 229);
 
     // leds.solidRed();
-    leds.redVerticalFade();
+    // leds.redVerticalFade();
+    leds.verticalRainbow(4);
+    // leds.horizontalRainbow(4);
 }

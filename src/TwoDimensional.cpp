@@ -82,13 +82,45 @@ class TwoDimensional {
         }
     }
 
+    void verticalRainbow(int periodSec) {
+        for (uint8_t t = 0; true; t++) {
+            for (int i = 0; i < NUM_LEDS; i++) {
+                CHSV color = verticalRainbow(points[i].x, points[i].y, 50, t);
+                leds[i].setHSV(color.h, color.s, color.v);
+            }
+            FastLED.show();
+            delay(1000 * ((float)periodSec / 255));
+        }
+    }
+    
+    void horizontalRainbow(int periodSec) {
+        for (uint8_t t = 0; true; t++) {
+            for (int i = 0; i < NUM_LEDS; i++) {
+                CHSV color = horizontalRainbow(points[i].x, points[i].y, 225, t);
+                leds[i].setHSV(color.h, color.s, color.v);
+            }
+            FastLED.show();
+            delay(1000 * ((float)periodSec / 255));
+        }
+    }
+
     private:
     CHSV solidRed(int x, int y) {
         return CHSV(0, 255, 255);
     }
 
     CHSV redVerticalFade(int x, int y) {
-        uint8_t brightness = map(y, minY-10, maxY+10, 0, 255);
+        uint8_t brightness = map(y, minY, maxY, 0, 255);
         return CHSV(0, 255, brightness);
+    }
+
+    CHSV verticalRainbow(int x, int y, uint8_t hueAngle, uint8_t hueOffset) {
+        uint8_t hue = map(y, minY, maxY, hueOffset, hueOffset + hueAngle);
+        return CHSV(hue, 255, 255);
+    }
+
+    CHSV horizontalRainbow(int x, int y, uint8_t hueAngle, uint8_t hueOffset) {
+        uint8_t hue = map(x, minX, maxX, hueOffset, hueOffset + hueAngle);
+        return CHSV(hue, 255, 255);
     }
 };
