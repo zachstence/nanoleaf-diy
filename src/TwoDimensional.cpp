@@ -65,7 +65,7 @@ class TwoDimensional {
     void solidRed() {
         while (true) {
             for (int i = 0; i < NUM_LEDS; i++) {
-                CHSV color = solidRed(points[i].x, points[i].y);
+                CHSV color = solidRed(points[i]);
                 leds[i].setHSV(color.h, color.s, color.v);
             }
             FastLED.show();
@@ -75,7 +75,7 @@ class TwoDimensional {
     void redVerticalFade() {
         while (true) {
             for (int i = 0; i < NUM_LEDS; i++) {
-                CHSV color = redVerticalFade(points[i].x, points[i].y);
+                CHSV color = redVerticalFade(points[i]);
                 leds[i].setHSV(color.h, color.s, color.v);
             }
             FastLED.show();
@@ -85,7 +85,7 @@ class TwoDimensional {
     void verticalRainbow(int periodSec) {
         for (uint8_t t = 0; true; t++) {
             for (int i = 0; i < NUM_LEDS; i++) {
-                CHSV color = verticalRainbow(points[i].x, points[i].y, 50, t);
+                CHSV color = verticalRainbow(points[i], 50, t);
                 leds[i].setHSV(color.h, color.s, color.v);
             }
             FastLED.show();
@@ -96,7 +96,7 @@ class TwoDimensional {
     void horizontalRainbow(int periodSec) {
         for (uint8_t t = 0; true; t++) {
             for (int i = 0; i < NUM_LEDS; i++) {
-                CHSV color = horizontalRainbow(points[i].x, points[i].y, 225, t);
+                CHSV color = horizontalRainbow(points[i], 225, t);
                 leds[i].setHSV(color.h, color.s, color.v);
             }
             FastLED.show();
@@ -107,7 +107,7 @@ class TwoDimensional {
     void rainbowWheel(int periodSec) {
         for (uint8_t t = 0; true; t++) {
             for (int i = 0; i < NUM_LEDS; i++) {
-                CHSV color = rainbowWheel(points[i].x, points[i].y, center.x, center.y, t);
+                CHSV color = rainbowWheel(points[i], center, t);
                 leds[i].setHSV(color.h, color.s, color.v);
             }
             FastLED.show();
@@ -116,32 +116,29 @@ class TwoDimensional {
     }
 
     private:
-    CHSV solidRed(int x, int y) {
+    CHSV solidRed(Point p) {
         return CHSV(0, 255, 255);
     }
 
-    CHSV redVerticalFade(int x, int y) {
-        uint8_t brightness = map(y, minY, maxY, 0, 255);
+    CHSV redVerticalFade(Point p) {
+        uint8_t brightness = map(p.y, minY, maxY, 0, 255);
         return CHSV(0, 255, brightness);
     }
 
-    CHSV verticalRainbow(int x, int y, uint8_t hueAngle, uint8_t hueOffset) {
-        uint8_t hue = map(y, minY, maxY, hueOffset, hueOffset + hueAngle);
+    CHSV verticalRainbow(Point p, uint8_t hueAngle, uint8_t hueOffset) {
+        uint8_t hue = map(p.y, minY, maxY, hueOffset, hueOffset + hueAngle);
         return CHSV(hue, 255, 255);
     }
 
-    CHSV horizontalRainbow(int x, int y, uint8_t hueAngle, uint8_t hueOffset) {
-        uint8_t hue = map(x, minX, maxX, hueOffset, hueOffset + hueAngle);
+    CHSV horizontalRainbow(Point p, uint8_t hueAngle, uint8_t hueOffset) {
+        uint8_t hue = map(p.x, minX, maxX, hueOffset, hueOffset + hueAngle);
         return CHSV(hue, 255, 255);
     }
 
-    CHSV rainbowWheel(int x, int y, int cx, int cy, uint8_t hueOffset) {
-        Point p = {x, y};
-        Point c = {cx, cy};
-
+    CHSV rainbowWheel(Point p, Point c, uint8_t hueOffset) {
         float angle = c.getAngle(p);
         uint8_t hue = map(angle, -PI, PI, hueOffset, 255+hueOffset);
-        
+
         return CHSV(hue, 255, 255);
     }
 };
