@@ -16,16 +16,6 @@ class OneDimensional {
         FastLED.setBrightness(BRIGHTNESS);
     }
 
-    void run() {
-        //  rainbowSpin(28.333);
-        // rainbowSpin2(5, 50);
-         rainbowTheater(5, 50);
-        //  setColor(255, 0, 0);
-        // breathe(255, 0, 0, 2);
-        // chase(0, 255, 229);
-    }
-
-    private:
     void setColor(uint8_t r, uint8_t g, uint8_t b) {
         for (int i = 0; i < NUM_LEDS; i++) {
             leds[i].setRGB(r, g, b);
